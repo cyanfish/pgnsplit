@@ -57,6 +57,7 @@
             this.ClientSize = new System.Drawing.Size(315, 76);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.progressBar1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form2";
             this.Text = "Splitting...";
             this.Shown += new System.EventHandler(this.Form2_Shown);
