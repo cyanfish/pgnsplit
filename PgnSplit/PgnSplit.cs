@@ -42,6 +42,7 @@ namespace PgnSplit
                         if (output == null || bytesWritten + gameLength > partSize)
                         {
                             // Split to the next file
+                            output?.Dispose();
                             string dir = Path.GetDirectoryName(path);
                             string fileName = Path.GetFileNameWithoutExtension(path) + $".{outputFileNumber++}.pgn";
                             string outputPath = dir != null ? Path.Combine(dir, fileName) : fileName;
