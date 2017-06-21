@@ -14,40 +14,58 @@ namespace PgnSplit
             long bytesWritten = 0;
             long totalBytesWritten = 0;
             long originalSize = new FileInfo(path).Length;
-            int i = 0;
-            int currentOutputNumber = 0;
-            string prevLine = null;
+            int lineIndex = 0;
+            int outputFileNumber = 1;
             List<string> outputFiles = new List<string>();
             StreamWriter output = null;
             StreamReader input = new StreamReader(path);
+            long gameLength = 0;
+            bool gameHasMoves = false;
+            List<string> gameBuffer = new List<string>();
             try
             {
                 while (true)
                 {
-                    if (output == null)
-                    {
-                        string dir = Path.GetDirectoryName(path);
-                        string fileName = Path.GetFileNameWithoutExtension(path) + $".{++currentOutputNumber}.pgn";
-                        string outputPath = dir != null ? Path.Combine(dir, fileName) : fileName;
-                        outputFiles.Add(outputPath);
-                        output = new StreamWriter(outputPath);
-                    }
                     string line = input.ReadLine();
+                    if (line != null)
+                    {
+                        gameBuffer.Add(line);
+                        gameLength += line.Length;
+                        if (line.Length > 0 && char.IsDigit(line[0]))
+                        {
+                            gameHasMoves = true;
+                        }
+                    }
+                    if (string.IsNullOrWhiteSpace(line) && gameHasMoves)
+                    {
+                        // Flush the game buffer
+                        if (output == null || bytesWritten + gameLength > partSize)
+                        {
+                            // Split to the next file
+                            string dir = Path.GetDirectoryName(path);
+                            string fileName = Path.GetFileNameWithoutExtension(path) + $".{outputFileNumber++}.pgn";
+                            string outputPath = dir != null ? Path.Combine(dir, fileName) : fileName;
+                            outputFiles.Add(outputPath);
+                            output = new StreamWriter(outputPath);
+                            bytesWritten = 0;
+                        }
+                        foreach (var bufferedLine in gameBuffer)
+                        {
+                            output.Write(bufferedLine);
+                            output.Write('\n');
+                            bytesWritten += bufferedLine.Length + 1;
+                            totalBytesWritten += bufferedLine.Length + 1;
+                        }
+                        gameBuffer.Clear();
+                        gameLength = 0;
+                        gameHasMoves = false;
+                    }
                     if (line == null)
                     {
                         break;
                     }
-                    output.WriteLine(line);
-                    bytesWritten += line.Length;
-                    totalBytesWritten += line.Length;
-                    i++;
-                    if (bytesWritten > partSize && line.Trim() == "" && prevLine != null && char.IsDigit(prevLine[0]))
-                    {
-                        // Split to the next file
-                        output = null;
-                        bytesWritten = 0;
-                    }
-                    if (i % 1000 == 0 && !progressCallback(totalBytesWritten, originalSize))
+                    lineIndex++;
+                    if (lineIndex % 1000 == 0 && !progressCallback(totalBytesWritten, originalSize))
                     {
                         // Cancelled
                         output?.Dispose();
@@ -55,9 +73,13 @@ namespace PgnSplit
                         {
                             File.Delete(outputPath);
                         }
-                        break;
+                        return;
                     }
-                    prevLine = line;
+                }
+                if (!keepOriginal)
+                {
+                    input.Dispose();
+                    File.Delete(path);
                 }
             }
             finally

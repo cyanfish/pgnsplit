@@ -36,7 +36,7 @@ namespace PgnSplit
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            Close();
+            Invoke(new Action(Close));
         }
 
         private void Form2_Shown(object sender, EventArgs e)
