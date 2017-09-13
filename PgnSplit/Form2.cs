@@ -20,7 +20,7 @@ namespace PgnSplit
 
         public string Path { get; set; }
 
-        public int PartSizeGB { get; set; }
+        public long PartSize { get; set; }
 
         public bool KeepOriginal { get; set; }
 
@@ -30,7 +30,7 @@ namespace PgnSplit
         {
             try
             {
-                PgnSplit.Split(Path, PartSizeGB * 1024 * 1024 * 1024, KeepOriginal, Progress);
+                PgnSplit.Split(Path, PartSize, KeepOriginal, Progress);
             }
             catch (Exception ex)
             {

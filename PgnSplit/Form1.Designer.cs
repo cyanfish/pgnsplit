@@ -32,10 +32,10 @@
             this.btnFilePrompt = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.cbKeepOriginal = new System.Windows.Forms.CheckBox();
             this.btnSplit = new System.Windows.Forms.Button();
             this.txtPartSize = new System.Windows.Forms.TextBox();
+            this.cbSizeUnit = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // txtFile
@@ -76,19 +76,10 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Part size:";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(46, 83);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(22, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "GB";
-            // 
             // cbKeepOriginal
             // 
             this.cbKeepOriginal.AutoSize = true;
-            this.cbKeepOriginal.Location = new System.Drawing.Point(95, 82);
+            this.cbKeepOriginal.Location = new System.Drawing.Point(113, 82);
             this.cbKeepOriginal.Name = "cbKeepOriginal";
             this.cbKeepOriginal.Size = new System.Drawing.Size(103, 17);
             this.cbKeepOriginal.TabIndex = 6;
@@ -114,15 +105,28 @@
             this.txtPartSize.TabIndex = 8;
             this.txtPartSize.Text = "1";
             // 
+            // cbSizeUnit
+            // 
+            this.cbSizeUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSizeUnit.FormattingEnabled = true;
+            this.cbSizeUnit.ItemHeight = 13;
+            this.cbSizeUnit.Items.AddRange(new object[] {
+            "MB",
+            "GB"});
+            this.cbSizeUnit.Location = new System.Drawing.Point(45, 80);
+            this.cbSizeUnit.Name = "cbSizeUnit";
+            this.cbSizeUnit.Size = new System.Drawing.Size(41, 21);
+            this.cbSizeUnit.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 113);
+            this.Controls.Add(this.cbSizeUnit);
             this.Controls.Add(this.txtPartSize);
             this.Controls.Add(this.btnSplit);
             this.Controls.Add(this.cbKeepOriginal);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnFilePrompt);
@@ -141,10 +145,10 @@
         private System.Windows.Forms.Button btnFilePrompt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox cbKeepOriginal;
         private System.Windows.Forms.Button btnSplit;
         private System.Windows.Forms.TextBox txtPartSize;
+        private System.Windows.Forms.ComboBox cbSizeUnit;
     }
 }
 

@@ -15,6 +15,7 @@ namespace PgnSplit
         public Form1()
         {
             InitializeComponent();
+            cbSizeUnit.SelectedItem = "GB";
         }
 
         private void btnFilePrompt_Click(object sender, EventArgs e)
@@ -33,10 +34,16 @@ namespace PgnSplit
 
         private void btnSplit_Click(object sender, EventArgs e)
         {
+            int partSizeValue = int.TryParse(txtPartSize.Text, out int value) ? value : 1;
+            long partSize = 1024 * 1024 * partSizeValue;
+            if (cbSizeUnit.Text == "GB")
+            {
+                partSize *= 1024;
+            }
             new Form2
             {
                 Path = txtFile.Text,
-                PartSizeGB = int.TryParse(txtPartSize.Text, out int value) ? value : 1,
+                PartSize = partSize,
                 KeepOriginal = cbKeepOriginal.Checked
             }.ShowDialog();
         }
